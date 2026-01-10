@@ -6,7 +6,7 @@
       <div class="chat-container">
         <header class="chat-intro">
           <div class="bot-avatar">🤖</div>
-          <h1>Ai Support</h1>
+          <h1>AI Support</h1>
           <p class="disclaimer">
             I'm here to listen and provide wellness resources. 
             <strong>If you are in a crisis, please contact emergency services.</strong>
