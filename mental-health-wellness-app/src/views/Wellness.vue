@@ -1,79 +1,173 @@
-<script setup>
-import { ref } from 'vue'
-import Navbar from '@/components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
-</script>
-
-<!-- AppLayout.vue -->
 <template>
-    <Navbar/>
-  <div class="app-layout-container">
-    <header class="app-header">
-      <!-- Default content for the header slot if none provided by parent -->
-      <slot name="header">
-        <h1>Mental Health Wellness App</h1>
-      </slot>
-    </header>
+  <div class="page-wrapper">
+    <Navbar />
 
-    <div class="content-wrapper">
-      <aside class="app-sidebar">
-        <!-- Placeholder for sidebar content -->
-        <slot name="sidebar">
-          <p>Default Sidebar Content</p>
-        </slot>
-      </aside>
+    <main class="wellness-content">
+      <section class="wellness-hero">
+        <h1>Wellness Library</h1>
+        <p>Explore resources to help you maintain balance and mental clarity.</p>
+        
+        <div class="filter-bar">
+          <button v-for="cat in categories" :key="cat" 
+                  :class="['filter-btn', { active: activeCategory === cat }]"
+                  @click="activeCategory = cat">
+            {{ cat }}
+          </button>
+        </div>
+      </section>
 
-      <main class="app-main">
-        <!-- Main content placeholder (default slot) -->
-        <slot>
-          <h2>Welcome</h2>
-          <p>This is the Wellness Page.</p>
-        </slot>
-      </main>
-    </div>
+      <section class="resource-grid">
+        <div v-for="item in filteredResources" :key="item.title" class="resource-card">
+          <div class="card-icon">{{ item.icon }}</div>
+          <div class="card-body">
+            <span class="category-tag">{{ item.category }}</span>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            <button class="read-more">Learn More →</button>
+          </div>
+        </div>
+      </section>
+    </main>
 
-    
+    <Footer />
   </div>
-  <Footer/>
 </template>
 
+<script setup>
+import { ref, computed } from 'vue';
+import Navbar from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
+
+const activeCategory = ref('All');
+const categories = ['All', 'Mind', 'Body', 'Sleep', 'Nutrition'];
+
+const resources = ref([
+  { title: 'Digital Detox', category: 'Mind', icon: '📱', description: 'How to reduce screen time and improve your focus.' },
+  { title: 'Morning Stretching', category: 'Body', icon: '🧘', description: '5-minute routines to wake up your muscles.' },
+  { title: 'Deep Sleep Hygiene', category: 'Sleep', icon: '🌙', description: 'Creating the perfect environment for rest.' },
+  { title: 'Mindful Eating', category: 'Nutrition', icon: '🥗', description: 'Connecting with your food for better health.' },
+  { title: 'Journaling Prompts', category: 'Mind', icon: '✍️', description: 'Daily questions to help process your emotions.' },
+  { title: 'The Power of Walking', category: 'Body', icon: '👟', description: 'Why a 20-minute walk is vital for mental health.' },
+]);
+
+const filteredResources = computed(() => {
+  if (activeCategory.value === 'All') return resources.value;
+  return resources.value.filter(r => r.category === activeCategory.value);
+});
+</script>
+
 <style scoped>
-/* Basic Flexbox styling for flexibility */
-.app-layout-container {
+.page-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Full viewport height */
+  min-height: 100vh;
 }
 
-.content-wrapper {
+.wellness-content {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.wellness-hero {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.wellness-hero h1 {
+  font-size: 2.8rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+/* Category Filter Styles */
+.filter-bar {
   display: flex;
-  flex: 1; /* Allows content area to grow and fill available space */
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+  flex-wrap: wrap;
 }
 
-.app-header, .app-footer {
-  background-color: #333;
+.filter-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+  background: #42b883;
   color: white;
-  padding: 1rem;
+  border-color: #42b883;
+}
+
+/* Resource Grid */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.resource-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.resource-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  font-size: 3rem;
+  padding: 30px;
+  background: #f9fdfb;
   text-align: center;
 }
 
-.app-sidebar {
-  background-color: #f4f4f4;
-  padding: 1rem;
-  flex-basis: 200px; /* Fixed width sidebar, adjust as needed */
+.card-body {
+  padding: 20px;
 }
 
-.app-main {
-  padding: 1rem;
-  flex: 1; /* Allows main content to take up remaining space */
+.category-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #42b883;
+  letter-spacing: 1px;
+}
+
+.card-body h3 {
+  margin: 10px 0;
+  color: #333;
+}
+
+.card-body p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.read-more {
+  background: none;
+  border: none;
+  color: #42b883;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
 }
 
 @media (max-width: 768px) {
-  .content-wrapper {
-    flex-direction: column;
-  }
-  .app-sidebar {
-    flex-basis: auto; /* Full width sidebar on small screens */
-  }
+  .wellness-hero h1 { font-size: 2rem; }
 }
 </style>

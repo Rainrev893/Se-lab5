@@ -6,74 +6,141 @@ import Footer from '@/components/Footer.vue'
 
 <!-- AppLayout.vue -->
 <template>
-    <Navbar/>
-  <div class="app-layout-container">
-    <header class="app-header">
-      <!-- Default content for the header slot if none provided by parent -->
-      <slot name="header">
-        <h1>Mental Health Wellness App</h1>
-      </slot>
+  <Navbar />
+  
+  <div class="home-container">
+    <header class="hero-section">
+      <div class="hero-content">
+        <h1>Breathe. Reflect. <span class="highlight">Heal.</span></h1>
+        <p>Your digital sanctuary for mental wellness and AI-guided support.</p>
+        <div class="hero-actions">
+          <router-link to="/breathing" class="btn btn-primary">Start Breathing</router-link>
+          <router-link to="/wellness" class="btn btn-primary">Read Wellness Tips</router-link>
+          <router-link to="/ai-support" class="btn btn-secondary">Talk to AI</router-link>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="image-blob"></div>
+      </div>
     </header>
 
-    <div class="content-wrapper">
-      <aside class="app-sidebar">
-        <!-- Placeholder for sidebar content -->
-        <slot name="sidebar">
-          <p>Default Sidebar Content</p>
-        </slot>
-      </aside>
-
-      <main class="app-main">
-        <!-- Main content placeholder (default slot) -->
-        <slot>
-          <h2>Welcome</h2>
-          <p>This is Home Page.</p>
-        </slot>
-      </main>
-    </div>
-
-    
+    <section class="features-grid">
+      <div class="feature-card">
+        <div class="icon">🧘</div>
+        <h3>Guided Breathing</h3>
+        <p>Find your center with interactive exercises designed to reduce anxiety.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🤖</div>
+        <h3>AI Support</h3>
+        <p>24/7 empathetic listening and mental health resources at your fingertips.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌿</div>
+        <h3>Wellness Tracking</h3>
+        <p>Monitor your progress and build healthy habits over time.</p>
+      </div>
+    </section>
   </div>
-  <Footer/>
+
+  <Footer />
 </template>
 
 <style scoped>
-/* Basic Flexbox styling for flexibility */
-.app-layout-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Full viewport height */
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.content-wrapper {
+/* Hero Section */
+.hero-section {
   display: flex;
-  flex: 1; /* Allows content area to grow and fill available space */
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 0;
+  gap: 40px;
 }
 
-.app-header, .app-footer {
-  background-color: #333;
+.hero-content h1 {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.highlight {
+  color: #42b883;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: 30px;
+  max-width: 500px;
+}
+
+/* Buttons */
+.hero-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background-color: #42b883;
   color: white;
-  padding: 1rem;
+}
+
+.btn-secondary {
+  border: 2px solid #42b883;
+  color: #42b883;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 60px 0;
+}
+
+.feature-card {
+  padding: 40px;
+  background: #f9f9f9;
+  border-radius: 16px;
   text-align: center;
+  transition: box-shadow 0.3s;
 }
 
-.app-sidebar {
-  background-color: #f4f4f4;
-  padding: 1rem;
-  flex-basis: 200px; /* Fixed width sidebar, adjust as needed */
+.feature-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-.app-main {
-  padding: 1rem;
-  flex: 1; /* Allows main content to take up remaining space */
+.feature-card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
 }
 
+/* Mobile Adjustments */
 @media (max-width: 768px) {
-  .content-wrapper {
+  .hero-section {
     flex-direction: column;
+    text-align: center;
+    padding: 40px 0;
   }
-  .app-sidebar {
-    flex-basis: auto; /* Full width sidebar on small screens */
-  }
+  .hero-content h1 { font-size: 2.5rem; }
+  .hero-actions { justify-content: center; }
 }
 </style>
