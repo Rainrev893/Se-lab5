@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "homepage": "https://rainrev893.github.io/Se-lab5",
+  "homepage": "https://rainrev893.github.io/Se-lab5/",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },
