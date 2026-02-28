@@ -1,21 +1,16 @@
-import express from 'express';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import moodRoutes from "./routes/moods.js";
+
+dotenv.config();
+
 const app = express();
+app.use(cors());
+app.use(express.json());
 
-// Example: Root route
-app.get('/', (req, res) => {
-  res.send('🧠 Mental Health API is running!');
-});
+app.use("/api/moods", moodRoutes);
 
-// Your other routes
-import moodsRouter from './routes/moods.js';
-app.use('/moods', moodsRouter);
-
-
-app.get('/', (req, res) => {
-  res.send('🧠 Mental Health API is running!');
-});
-
-// Start server
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+app.listen(process.env.PORT, () => {
+  console.log("Server running on port", process.env.PORT);
 });
