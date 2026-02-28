@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import moodsRouter from '/routes/moods.js';
+import moodsRouter from './routes/moods.js';
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 // ✅ FIXED: match your frontend route
-app.use('/api/moods', moodsRouter);
+app.use('./api/moods', moodsRouter);
 
 // Start server
 app.listen(3000, () => {
