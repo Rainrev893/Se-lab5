@@ -22,7 +22,7 @@
           :disabled="loading || !name || !mood"
           class="btn submit-btn"
         >
-          <span v-if="loading">Processing...</span>
+          <span v-if="loading">Procsssing...</span>
           <span v-else>Submit</span>
         </button>
       </div>
