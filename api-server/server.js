@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('🧠 Mental Health API is running!');
+  res.send('🧠 Mentasl Health API is running!');
 });
 
 // ✅ FIXED: match your frontend route
