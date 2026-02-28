@@ -1,22 +1,16 @@
-import express from 'express';
-import cors from 'cors';
-import moodsRouter from './routes/moods.js';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import moodRoutes from "./routes/moods.js";
+
+dotenv.config();
 
 const app = express();
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('🧠 Mentasl Health API is running!');
-});
+app.use("/api/moods", moodRoutes);
 
-// ✅ FIXED: match your frontend route
-app.use('./api/moods', moodsRouter);
-
-// Start server
-app.listen(3000, () => {
-  console.log('Server running on http://localhost:3000');
+app.listen(process.env.PORT, () => {
+  console.log("Server running on port", process.env.PORT);
 });
