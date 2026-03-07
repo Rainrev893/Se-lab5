@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'https://lab-6-oajw.onrender.com', // Remove the /api here
+  baseURL: 'https://se-lab5-1.onrender.com', // Remove the /api here
   headers: {
     "Content-Type": "application/json",
   },
