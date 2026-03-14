@@ -61,12 +61,11 @@ export default {
   methods: {
     async submitMood() {
       // --- PART 0.1: LOGGING ---
+      console.log("User mood value:", moodValue); 
+      console.log(moodValue);
+      
       console.log("User clicked submit button");
       console.log("Mood value entered:", this.mood);
-
-      // --- BUG #1: Undefined Variable ---
-      // UNCOMMENT the line below ONLY when you are ready to take the Bug #1 screenshot
-      console.log("User mood value:", moodValue); 
 
       this.loading = true;
       this.error = null;
