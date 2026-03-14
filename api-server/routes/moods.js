@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
     // 2. Insert the mood
     // --- BUG #3 HINT: Temporarily change 'mood_entries' to 'mood_logs' for screenshot ---
     const [moodResult] = await db.query(
-      "INSERT INTO mood_logs (user_id, mood_text) VALUES (?, ?)",
+      "INSERT INTO mood_entries (user_id, mood_text) VALUES (?, ?)",
       [userId, mood_text]
     );
 
