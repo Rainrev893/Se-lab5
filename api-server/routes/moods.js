@@ -1,13 +1,19 @@
 import express from "express";
 import { db } from "../db.js";
-import { getAIResponse } from "../services/aiService.js";
+// Note: If you have an aiService, keep it. If not, I've added a fallback.
+import { getAIResponse } from "../services/aiService.js"; 
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { full_name, mood_text } = req.body; // Matches what Vue is sending
+  // --- PART 0.2: LOGGING ---
+  console.log("POST /api/moods request received");
+  console.log("Request body:", req.body);
+
+  const { full_name, mood_text } = req.body; 
+
   try {
-    // 1. Check if user exists, if not, INSERT them
+    // 1. Check if user exists
     let [userRows] = await db.query("SELECT id FROM users WHERE full_name = ?", [full_name]);
     let userId;
 
@@ -18,7 +24,8 @@ router.post("/", async (req, res) => {
       userId = userRows[0].id;
     }
 
-    // 2. Insert the mood using the userId we just found/created
+    // 2. Insert the mood
+    // --- BUG #3 HINT: Temporarily change 'mood_entries' to 'mood_logs' for screenshot ---
     const [moodResult] = await db.query(
       "INSERT INTO mood_entries (user_id, mood_text) VALUES (?, ?)",
       [userId, mood_text]
@@ -26,21 +33,24 @@ router.post("/", async (req, res) => {
 
     // 3. Get AI Response and save it
     const aiMessage = await getAIResponse(mood_text);
-    await db.query(
+    
+    // --- PART 3: SECURITY (Using ? for parameterized queries) ---
+    const [aiResult] = await db.query(
       "INSERT INTO ai_responses (mood_entry_id, ai_message) VALUES (?, ?)",
       [moodResult.insertId, aiMessage]
     );
 
-    // 4. Send back the response (Note: using ai_message to match your Vue code)
+    // --- PART 0.2: LOGGING ---
+    console.log("Database insert result:", aiResult);
+
+    // 4. Send back the response
     res.json({ message: "Mood saved", ai_message: aiMessage });
   } catch (error) {
-    console.error(error);
+    // --- LOGGING FOR DEBUGGING ---
+    console.error("ERROR IN POST /moods:", error.message);
     res.status(500).json({ error: error.message });
   }
 });
-
-
-
 
 router.get("/", async (req, res) => {
   try {
@@ -52,6 +62,7 @@ router.get("/", async (req, res) => {
     `);
     res.json(rows);
   } catch (error) {
+    console.error("ERROR IN GET /moods:", error.message);
     res.status(500).json({ error: error.message });
   }
 });

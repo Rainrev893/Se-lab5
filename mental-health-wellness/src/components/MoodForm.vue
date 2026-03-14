@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <h2>Mood Check-in</h2>
+    <h2>Mood Check-in (Lab 7)</h2>
     
-    <!-- Input Section -->
     <div class="form-group">
       <input v-model="name" placeholder="Your name" :disabled="loading" />
       <textarea v-model="mood" placeholder="How are you feeling today?" :disabled="loading"></textarea>
@@ -13,15 +12,12 @@
       </button>
     </div>
 
-    <!-- Error/AI Response Section -->
     <p v-if="error" class="error-msg">⚠️ {{ error }}</p>
     <div v-if="aiMessage" class="ai-box">
       <strong>AI Advisor:</strong> {{ aiMessage }}
     </div>
 
     <hr />
-
-    <!-- Mood History List (Extra Credit) -->
     <h3>Mood History</h3>
     <button @click="fetchHistory" class="refresh-btn">🔄 Refresh History</button>
     
@@ -35,9 +31,9 @@
       </thead>
       <tbody>
         <tr v-for="entry in history" :key="entry.id">
-          <td>{{ entry.full_name }}</td>
-          <td>{{ entry.mood_text }}</td>
-          <td>{{ entry.ai_message }}</td>
+          <td>{{ entry.user_name }}</td>
+          <td>{{ entry.mood }}</td>
+          <td>{{ entry.ai_response }}</td>
         </tr>
       </tbody>
     </table>
@@ -64,19 +60,34 @@ export default {
   },
   methods: {
     async submitMood() {
+      // --- PART 0.1: LOGGING ---
+      console.log("User clicked submit button");
+      console.log("Mood value entered:", this.mood);
+
+      // --- BUG #1: Undefined Variable ---
+      // UNCOMMENT the line below ONLY when you are ready to take the Bug #1 screenshot
+      // console.log("User mood value:", moodValue); 
+
       this.loading = true;
       this.error = null;
+
       try {
         const res = await api.post('/api/moods', {
-          user_id: 1,
-          mood_text: this.mood
+          user_name: this.name,
+          mood: this.mood
         });
         
-        this.aiMessage = res.data.ai_message || res.data.aiMessage;
+        // --- PART 0.1: LOGGING ---
+        console.log("API response status:", res.status);
+
+        this.aiMessage = res.data.ai_response;
         this.mood = ''; 
         this.fetchHistory();
       } catch (err) {
-        this.error = "Failed to connect to server. Is the backend running?";
+        this.error = "Failed to connect to server.";
+        if (err.response) {
+            console.log("API response status:", err.response.status);
+        }
       } finally {
         this.loading = false;
       }
@@ -94,12 +105,12 @@ export default {
 </script>
 
 <style scoped>
-.container { max-width: 600px; margin: auto; font-family: sans-serif; }
+.container { max-width: 600px; margin: auto; font-family: sans-serif; color: white; padding: 20px;}
 .form-group { display: flex; flex-direction: column; gap: 10px; }
-.ai-box { background:rgb(0, 0, 0); padding: 15px; border-left: 5px solid #2196f3; margin-top: 10px; }
-.error-msg { color: red; font-weight: bold; }
-.history-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-.history-table th, .history-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-.refresh-btn { margin-bottom: 10px; cursor: pointer; }
+.ai-box { background: #1a1a1a; padding: 15px; border-left: 5px solid #2196f3; margin-top: 10px; }
+.error-msg { color: #ff4444; font-weight: bold; }
+.history-table { width: 100%; border-collapse: collapse; margin-top: 10px; color: white;}
+.history-table th, .history-table td { border: 1px solid #444; padding: 8px; text-align: left; }
+.refresh-btn { margin-bottom: 10px; cursor: pointer; background: #2196f3; color: white; border: none; padding: 5px 10px;}
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 </style>
