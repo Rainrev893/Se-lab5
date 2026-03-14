@@ -66,7 +66,7 @@ export default {
 
       // --- BUG #1: Undefined Variable ---
       // UNCOMMENT the line below ONLY when you are ready to take the Bug #1 screenshot
-      // console.log("User mood value:", moodValue); 
+      console.log("User mood value:", moodValue); 
 
       this.loading = true;
       this.error = null;
